@@ -1,6 +1,6 @@
-from django.http import HttpResponse
 from django.shortcuts import render
-from projects.models import Project,Projecttype,Devtype
+
+from projects.models import Project, Projecttype, Devtype
 
 
 # Create your views here.
@@ -18,25 +18,33 @@ from projects.models import Project,Projecttype,Devtype
 #     pass
 
 
-def project_list(request,id):
+def project_list(request, id):
     # TODO: filter projects by framework, language and category using django filter
-    categoryname=Projecttype.objects.get(id=id)
+    categoryname = Projecttype.objects.get(id=id)
 
     projecttypes = Project.objects.filter(projecttype_id=id)
-    return render(request, 'projects/all_projects.html', {'projecttypes': projecttypes,'categoryname':categoryname})
+    return render(request, 'projects/all_projects.html', {'projecttypes': projecttypes, 'categoryname': categoryname})
 
-def devtypes(request,id):
+
+def devtypes(request, id):
     # TODO: filter projects by framework, language and category using django filter
 
-    categoryname=Devtype.objects.get(id=id)
+    categoryname = Devtype.objects.get(id=id)
     devtypes = Project.objects.filter(devtype_id=id)
-    return render(request, 'projects/devtypes.html', {'devtypes':devtypes,'categoryname':categoryname})
+    return render(request, 'projects/devtypes.html', {'devtypes': devtypes, 'categoryname': categoryname})
+
+
+def projecttypes(request, id):
+    projecttype = Projecttype.objects.get(id=id)
+    projects = Project.objects.filter(projecttype=projecttype)
+    return render(request, 'projects/projecttype.html', {'projects': projects, 'projecttype': projecttype})
+
 
 def categories(request):
     projecttypes = Projecttype.objects.all()
     devtypes = Devtype.objects.all()
 
-    return render(request, 'projects/categories.html',{'projecttypes':projecttypes, 'devtypes': devtypes})
+    return render(request, 'projects/categories.html', {'projecttypes': projecttypes, 'devtypes': devtypes})
 
 
 def project(request, id):

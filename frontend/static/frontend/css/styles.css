@@ -1,0 +1,168 @@
+html, body {
+    height: 100%;
+    background-color: #f1f1f1;
+}
+
+@font-face {
+    font-family: 'CircularStd-Book';
+    src: url('/static/frontend/fonts/circularstd-book.woff2') format('woff2'),
+    url('/static/frontend/fonts/circularstd-book.ttf') format('truetype'),
+    url('/static/frontend/fonts/circularstd-book.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Tiempos Headline';
+    src: url('/static/frontend/fonts/tiempos-headline/TiemposHeadline-Bold.ttf') format('truetype'),
+    url('/static/frontend/fonts/tiempos-headline/TiemposHeadline-Bold.woff') format('woff'),
+    url('/static/frontend/fonts/tiempos-headline/TiemposHeadline-Bold.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Tiempos Text';
+    src: url('/static/frontend/fonts/tiempos-text/TiemposText-Regular.ttf') format('truetype'),
+    url('/static/frontend/fonts/tiempos-text/TiemposText-Regular.woff') format('woff'),
+    url('/static/frontend/fonts/tiempos-text/TiemposText-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.title,
+.mpl-bold {
+    font-family: "Tiempos Headline", sans-serif;
+    font-weight: 900;
+}
+
+body,
+p,
+div,
+span,
+font,
+.help,
+.input,
+.select,
+button,
+.button,
+option,
+select,
+.textarea {
+    font-family: "CircularStd-Book", sans-serif;
+    font-size: 16px;
+}
+
+.trans-400 {
+    transition: 400ms;
+}
+
+.navbar-item-active {
+    /*font-family: "Tiempos Headline", sans-serif;*/
+    font-weight: 900;
+}
+
+ul > li.is-active {
+    font-family: "Tiempos Headline", sans-serif;
+}
+
+ul > li {
+    font-family: "Tiempos Text", sans-serif;
+}
+
+.tabs {
+    font-size: 16px;
+}
+
+.money-field {
+    width: 100px;
+    margin-right: 10px;
+}
+
+.date-field {
+    width: 100px;
+    margin-right: 10px;
+
+}
+
+#id_whatsapp_number {
+    max-width: 350px;
+}
+
+.is-underlined {
+    text-decoration: underline;
+}
+
+.mpl-centering {
+    max-width: 900px;
+    margin: auto;
+}
+
+.mpl-hr {
+    width: 100px;
+    border: 2px solid #6200ee;
+    margin: auto;
+    background-color: #6200ee;
+    border-radius: 32px;
+}
+
+.mdc-color-accent {
+    background-color: #6200ee;
+    color: white;
+}
+
+a {
+    color: #6200ee;
+}
+
+.mdc-accent-border {
+    border-color: #6200ee;
+}
+
+a.navbar-item:hover {
+    color: #6200ee;
+}
+
+a.footer-link {
+    display: inline-block;
+    margin-bottom: 10px;
+    color: white;
+
+}
+
+a.navbar-item {
+    font-weight: 300;
+    font-size: 14px;
+}
+
+.tabs li.is-active a {
+    color: #6200ee;
+    border-bottom-color: #6200ee
+}
+
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+    font-family: 'CircularStd', sans-serif;
+!important;
+}
+
+div, p, a {
+    font-family: CircularStd, serif;
+}
+
+.trans-400 {
+    transition: 400ms;
+}
+
+.bgoverlay {
+    background: rgba(0, 0, 0, 0.2);
+}

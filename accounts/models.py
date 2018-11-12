@@ -1,11 +1,11 @@
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
-from projects.models import Language, Framework
-
 # Create your models here.
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+
+from projects.models import Language, Framework
 
 
 class Profile(models.Model):
@@ -15,7 +15,7 @@ class Profile(models.Model):
     )
     STAGE_CHOICES = (
         ('profile_type_selection', 'profile_type_selection'),
-        ('recuiter_filling_details', 'recuiter_filling_details'),
+        ('recruiter_filling_details', 'recruiter_filling_details'),
         ('developer_filling_details', 'developer_filling_details'),
         ('complete', 'complete'),
     )

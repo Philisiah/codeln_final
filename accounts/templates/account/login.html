@@ -1,64 +1,42 @@
-{% extends "account/base.html" %}
-{% load bootstrap4 %}
+{% extends "partials/navigation.html" %}
+{% load bulma_tags %}
 {% load i18n %}
 {% load account socialaccount %}
 {% block title %}
     Sign In
 {% endblock %}
-{%load static %}
 {% block head_title %}{% trans "Sign In" %}{% endblock %}
 
-{% block content %}
-<div class="container-fluid" style="margin-top: 5%">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 d-none d-lg-block mt-5">
-                <div class="cardno great gr">
-                    <div class="card-body">
-                        <div class="h4">Welcome Back</div>
-
-                        <img class="beer" src="{%static 'frontend/images/ill/work.svg' %}">
-
-
-
-
-                    </div>
-                </div>
+{% block below_navigation %}
+    <div class="container w3-container w3-padding-64 w3-padding-large">
+        <div class="columns is-centered">
+            <div class="column is-half is-narrow">
+                <h1 class="w3-xxlarge">{% trans "Welcome back" %}</h1>
+                {% providers_media_js %}
+                {#                <a href="{% provider_login_url "facebook" method="js_sdk" %}"#}
+                {#                   class="button is-fullwidth is-link w3-margin-top w3-margin-bottom">#}
+                {#                    <i class="fab fa-facebook-square"></i>&nbsp;&nbsp;#}
+                {#                    Continue with Facebook#}
+                {#                </a>#}
 
 
-            </div>
-            <div class="col-lg-4" style="margin-top: 5em">
-                <h5>Login</h5>
-
-
-                    {% providers_media_js %}
-
-                <form method="POST" action="{% url 'account_login' %}">
+                <p class="w3-text-black">{% blocktrans %}If you have not created an account yet, then
+                    please
+                    <a href="{{ signup_url }}" class="w3-border-bottom w3-border-blue">sign up</a>
+                    first{% endblocktrans %}</p>
+                <form id="login-form" class="login w3-margin-top" method="POST" action="{% url 'account_login' %}">
                     {% csrf_token %}
-                    {% bootstrap_form form %}
+                    {{ form|bulma }}
                     {% if redirect_field_value %}
                         <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
                     {% endif %}
-
-                    <button class="btn theme--dark primary px-4 " style="border-radius: 0;color: white" type="submit">{% trans "Sign In" %}</button>
-                    <a class="btn btn-link" href="{% url 'account_reset_password' %}">
-                        {% trans "Forgot Password?" %}
-                    </a>
-                    <a class="btn btn-link" href="{{ signup_url }}">
-                        I dont have an account
-                    </a>
-
+                    <button class="mdc-button mdc-button--raised"
+                            type="submit">{% trans "Sign In" %}</button>
+                    <a class="button  is-outlined is-text"
+                       href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
                 </form>
-
-
-
 
             </div>
         </div>
-
-
     </div>
-
-</div>
-
 {% endblock %}

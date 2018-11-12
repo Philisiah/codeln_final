@@ -1,0 +1,83 @@
+{% extends 'partials/navigation.html' %}
+{% load bulma_tags %}
+{% block title %}
+    Edit Profile
+{% endblock %}
+{% block below_navigation %}
+    <div class="w3-container w3-padding-16">
+        <div class="columns is-centered">
+            <div class="column is-half is-narrow">
+                <form action="" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    {{ edit_user_form|bulma }}
+                    {% for field in edit_profile_form %}
+                        {% if field.name == 'certificate' or field.name == 'profile_photo' %}
+                            <div class="field">
+                                <label class="label">{{ field.label }}</label>
+                                {% if field.value|length != 0 %}
+                                    Currently: <a href="{{ field.value.url }}">{{ field.value }}</a>
+
+                                {% endif %}
+                                <div class="control">
+
+
+                                    <label for="{{ field.id_for_label }}" class="field-label">
+
+                                        <input id="{{ field.id_for_label }}" style="visibility: hidden" type="file"
+                                               class="file-input" name="{{ field.name }}">
+                                        <span class="file-cta">
+                                          <span class="file-icon">
+                                            <i class="fas fa-upload"></i>
+                                          </span>
+                                          <span class="file-label">
+                                            Choose a file…
+                                          </span>
+                                            <span class="file-name" id="{{ field.id_for_label }}_name">
+                                                No file choosen
+                                            </span>
+                                        </span>
+                                    </label>
+
+                                </div>
+                            </div>
+                        {% else %}
+                            {{ field|bulma }}
+                        {% endif %}
+
+                    {% endfor %}
+
+
+                    <button type="submit" class="mdc-button mdc-button--raised">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        $('#id_date_of_birth_month').wrap('<div class="select"></div>');
+        $('#id_date_of_birth_month').addClass('date-field');
+
+        $('#id_date_of_birth_day').wrap('<div class="select"></div>');
+        $('#id_date_of_birth_day').addClass('date-field');
+        $('#id_date_of_birth_year').wrap('<div class="select"></div>');
+        $('#id_date_of_birth_year').addClass('date-field');
+        var photo_file = document.getElementById("id_profile_photo");
+        photo_file.onchange = function () {
+            if (photo_file.files.length > 0) {
+
+                document.getElementById('id_profile_photo_name').innerHTML = photo_file.files[0].name;
+
+            }
+        };
+        let certificate_file = document.getElementById("id_certificate");
+        certificate_file.onchange = function () {
+            if (certificate_file.files.length > 0) {
+
+                document.getElementById('id_certificate_name').innerHTML = certificate_file.files[0].name;
+
+            }
+        };
+    </script>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% load i18n %}
+<aside class="menu w3-container w3-padding-large">
+
+    <p class="menu-label w3-large mpl-bold">
+        General
+    </p>
+    <ul class="menu-list">
+        <li class="w3-xlarge"><a href="{% url 'messages_inbox' %} ">{% trans "Inbox" %}</a></li>
+        <li class="w3-xlarge"><a href="{% url 'messages_outbox' %} ">{% trans "Outbook" %}</a></li>
+        {#        <li><a href="{% url 'messages_compose' %} ">{% trans "New Message" %}</a></li>#}
+        {#        <li><a href="{% url 'messages_trash' %} ">{% trans "Trash" %}</a></li>#}
+    </ul>
+</aside>

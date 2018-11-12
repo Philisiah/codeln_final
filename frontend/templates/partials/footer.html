@@ -1,0 +1,99 @@
+{% load static %}
+{% if not request.user.is_authenticated and not signup %}
+
+
+    <section class="w3-white w3-center">
+        <div class="hero-body">
+            <h1 class="title"> Get access to the best developers today</h1>
+            <a href="#" class="mdc-button mdc-button--raised">
+                Get Started
+            </a>
+        </div>
+    </section>
+{% endif %}
+<section class="w3-padding-32 w3-padding-large w3-dark-grey">
+    <div class="container w3-content">
+
+        <div class="columns is-multiline is-mobile">
+            <div class="column is-6-mobile">
+                <h1 class="title w3-large">
+                    <span class="mpl-bold w3-text-white">Codeln Technologies</span>
+                </h1>
+                <div>
+                    2B Banana Streeth, <br>
+                    East Legon, Accra, <br>
+                    Nigeria <br>
+                </div>
+                <br>
+                <a href="mailto:info@legalforms.ng" class="footer-link w3-border-bottom">Contact</a>
+                <br>
+                <a class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400"
+                   href="#">About</a>
+                <br>
+                <a href="https://www.linkedin.com/company/legalforms-ng/" target="_blank"
+                   class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400">LinkedIn</a>
+                <br>
+            </div>
+            <div class="column is-6-mobile">
+                <h1 class="title w3-large w3-text-white">Recruiter</h1>
+                <a href="#"
+                   class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400">How it
+                    works</a>
+                <br>
+                <a href="#"
+                   class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400">Our
+                    lawyers</a>
+                <br>
+                <a href="#"
+                   class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400">Pricing</a>
+                <br>
+                <a href="#"
+                   class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400">Client
+                    FAQs</a>
+                <br>
+                <a href="#"
+                   class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400">Log
+                    in</a>
+                <br>
+            </div>
+            <div class="column is-6-mobile">
+                <h1 class="title w3-large w3-text-white">Developers</h1>
+                <a class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400"
+                   href="#">Enroll
+                    on marketplace</a>
+                <br>
+                <a href="#"
+                   class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400">Lawyer
+                    FAQs</a>
+                <br>
+                <a class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400"
+                   href="#">Register</a>
+                <br>
+
+            </div>
+            <div class="column is-6-mobile">
+                <h1 class="title w3-large w3-text-white">Legal</h1>
+                <a href="#"
+                   class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400">Terms &
+                    Conditions</a>
+                {#                <br>#}
+                {#                <a class="footer-link w3-border-bottom w3-border-dark-gray w3-hover-border-white trans-400">Privacy#}
+                {#                    Policy</a>#}
+                <br>
+                <br>
+            </div>
+        </div>
+        <br>
+        <br>
+        <br>
+        <div class="w3-center w3-opacity">
+            <small>
+                © {{ YEAR }} <a class="w3-text-white w3-border-bottom" href="/">beta.codeln.com</a>. All
+                rights reserved.
+                <br>
+
+            </small>
+        </div>
+
+    </div>
+</section>

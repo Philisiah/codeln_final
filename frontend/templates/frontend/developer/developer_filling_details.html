@@ -1,61 +1,20 @@
-{% extends 'candidatesbase.html' %}
-{% load bootstrap4 %}
+{% extends 'partials/navigation.html' %}
+{% load bulma_tags %}
 {% load static %}
-{% block content %}
+{% block below_navigation %}
+    <div class="w3-margin-top w3-hide-small"></div>
+    <div class="w3-padding-small">
+        <div class="columns is-centered">
+            <div class="column is-three-fifths">
+                <h1 class="w3-center menu-label w3-xlarge">Please fill your developer details</h1>
+                <form action="." method="post" enctype="multipart/form-data" class="form">
+                    {% csrf_token %}
+                    {{ developer_filling_details_form|bulma }}
 
-    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+                    <button class="mdc-button mdc-button--raised" type="submit">Next</button>
 
-
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3  fley">
-            <div class="navbar fixed-top fine border-bottom">
-
-                <h5>My profile</h5>
-
-                <nav>
-
-                    <ul class="nav ">
-                        <!-- Authentication Links -->
-                        {% if request.user.is_authenticated %}
-                            <li class="nav-item">
-                                <a href="{% url 'account_logout' %}" class="navbar-item w3-opacity" title="Logout">Logout</a>
-                            </li>
-                        {% else %}
-                            <li class="nav-item">
-                                <a class="nav-item" href="{% url 'account_login' %}" class="navbar-item">Login</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-item" href="{% url 'account_signup' %}" class="navbar-item">Register</a>
-                            </li>
-                        {% endif %}
-
-
-                    </ul>
-
-                </nav>
+                </form>
             </div>
         </div>
-        <div class="alert alert-info" role="alert">
-            You are highly encouraged to fill all details.It will enable better job matching
-        </div>
-    <div class="row">
-        <div class="col-lg-6">
-            <form action="." method="post" enctype="multipart/form-data" class="form">
-                {% csrf_token %}
-                {% bootstrap_form developer_filling_details_form %}
-
-
-                    <button class="btn btn-primary"  type="submit">Next</button>
-
-            </form>
-
-        </div>
     </div>
-
-
-
-    </main>
-    </div>
-    </div>
-
-
 {% endblock %}

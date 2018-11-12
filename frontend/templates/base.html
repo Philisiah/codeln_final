@@ -10,17 +10,25 @@
     <meta name="theme-color" content="#272339">
     <title>{% block title %}
 
-        {% endblock %} | Codeln</title>
+    {% endblock %} | Codeln</title>
 
-    {% bootstrap_css %}
+    <link rel="stylesheet" href="{% static 'frontend/css/w3.css' %}">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'frontend/css/bulma.min.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/jquery.slick/1.5.0/slick.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/jquery.slick/1.5.0/slick-theme.css">
+    <link rel="stylesheet" href="{% static 'frontend/css/bundle.css' %}">
+    <link rel="stylesheet" href="{% static 'frontend/css/styles.css' %}">
 
-    <link rel="stylesheet" href="{% static 'frontend/css/home.css' %}">
-    <link rel="stylesheet" href="{% static 'frontend/css/stay.css' %}">
-
+    <meta name="msapplication-TileColor" content="#6200ee">
+    <meta name="theme-color" content="#6200ee">
 
 
     {% block css %}
@@ -28,63 +36,10 @@
     {% endblock %}
 </head>
 <body>
-<div class="container">
-<nav class="nav-container navbar navbar-expand-md navbar-light fixed-top ">
-    <a class="brandhome codelnlogo" style="text-decoration: none" href="/home">CODELN </a>
-    <span class="badge badge-primary">BETA</span>
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+{% block content %}
 
-
-
-    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-
-
-        <ul class="nav">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" style="color: white"  href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Product
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="{% url 'account_login' %}" >Screening</a>
-                    <a class="dropdown-item" href="{% url 'transactions:sourcing' %}">Sourcing</a>
-                    <a class="dropdown-item" href="/pricing">Pricing</a>
-
-
-                </div>
-            </li>
-
-
-            {% if request.user.is_authenticated %}
-            <li class="nav-item">
-                <a  href="{% url 'account_logout' %}" style="color: white" class="nav-link" >Logout</a>
-            </li>
-
-            {% else %}
-
-            <li class="nav-item">
-                <a  href="{% url 'account_login' %}" style="color: white" class="nav-link" >Login</a>
-            </li>
-            <li class="nav-item">
-                <a  href="{% url 'account_signup' %}" style="color: white" class="nav-link" >Register</a>
-            </li>
-            {% endif %}
-            <li class="nav-item">
-                <a  href="/dev" style="color: white" class="nav-link" >Developers</a>
-            </li>
-
-
-
-
-        </ul>
-    </div>
-</nav>
-</div>
-    {% block content %}
-
-    {% endblock %}
+{% endblock %}
 
 
 
@@ -96,34 +51,8 @@
 
 
 
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-
-{% bootstrap_javascript %}
-<script defer src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
-<script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
-<script>
-    feather.replace()
-</script>
-<script>
-    $(document).ready(function() {
-
-        $(window).scroll(function() {
-
-            var height = $('.nav-container').height();
-            var scrollTop = $(window).scrollTop();
-
-            if (scrollTop >= height - 38) {
-                $('.nav-container').addClass('solid-nav');
-            } else {
-                $('.nav-container').removeClass('solid-nav');
-            }
-
-        });
-    });
-</script>
-
-
+<script src="{% static 'frontend/js/bundle.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 {% block script %}
 

@@ -22,18 +22,21 @@ class Framework(models.Model):
     def __str__(self):
         return self.name
 
+
 class Devtype(models.Model):
     name = models.CharField(max_length=140)
-
+    description = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.name
 
+
 class Projecttype(models.Model):
     name = models.CharField(max_length=140)
+    description = models.TextField(null=True, blank=True)
 
     def __str__(self):
-        return  self.name
+        return self.name
 
 
 class Project(models.Model):
@@ -56,3 +59,14 @@ class Project(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class OngoingProjects(models.Model):
+    assigner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='assigner')
+    candidate = models.ForeignKey(User, on_delete=models.CASCADE, related_name='candidate')
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    # TODO bad code, improve by actually fixing circular imports
+    # correct: transaction = models.ForeignKey(Transaction, null=True, blank=True)
+    transaction = models.CharField(max_length=140, null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated = models.DateTimeField(auto_now=True, null=True, blank=True)

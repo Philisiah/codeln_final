@@ -1,23 +1,22 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse
+import uuid
 
 from django.contrib.auth.models import User
-from projects.models import Project
-from transactions.models import Transaction, Candidate
-from transactions.forms import CandidateForm, SourcingForm
-from invitations.models import Invitation
-
-
 from django.core.mail import send_mail, BadHeaderError
+from django.shortcuts import render, redirect
+from django.urls import reverse
+
+from projects.models import Project, OngoingProjects
+from transactions.forms import CandidateForm, SourcingForm
+from transactions.models import Transaction, Candidate
+
+
 # payments view
-from payments.views import process_payment
 
 
 # Create your views here.
 def transaction(request, id):
     project = Project.objects.get(id=id)
-    user = request.user
-    new_transaction = Transaction.objects.create(user=user, project=project, stage='upload-candidates')
+    new_transaction = Transaction.objects.create(user=request.user, project=project, stage='upload-candidates')
     return redirect(reverse('transactions:process_transaction', args=[new_transaction.id]))
 
 
@@ -27,14 +26,12 @@ def process_transaction(request, id):
         return upload_candidates(request, current_transaction)
     elif current_transaction.stage == 'payment-stage':
         return all_candidates(request, current_transaction)
-    elif current_transaction.stage == 'make-payment':
-        return all_candidates(request, current_transaction)
-    elif current_transaction.stage == 'payment-confirmed':
-        return invitations(request, current_transaction)
     elif current_transaction.stage == 'payment-verified':
         return invitations(request, current_transaction)
     elif current_transaction.stage == 'complete':
-        return redirect(reverse('frontend:index'))
+        # return redirect(reverse('frontend:index'))
+        return invitations(request, current_transaction)
+
 
 def upload_candidates(request, current_transaction):
     # id is transaction id
@@ -65,40 +62,48 @@ def upload_candidates(request, current_transaction):
                 return redirect(reverse('transactions:process_transaction', args=[current_transaction.id]))
         else:
             candidate_form = CandidateForm()
-            return render(request, 'transactions/upload_candidate.html', {'candidate_form': candidate_form, 'current_transaction':current_transaction})
+            return render(request, 'transactions/upload_candidate.html',
+                          {'candidate_form': candidate_form, 'current_transaction': current_transaction})
 
     else:
         candidate_form = CandidateForm()
-        return render(request, 'transactions/upload_candidate.html', {'candidate_form': candidate_form, 'current_transaction': current_transaction})
+        return render(request, 'transactions/upload_candidate.html',
+                      {'candidate_form': candidate_form, 'current_transaction': current_transaction})
 
 
 def all_candidates(request, current_transaction):
-    #candidates = current_transaction.allcandidates()
     candidates = Candidate.objects.filter(transaction=current_transaction)
     total_amount = current_transaction.amount()
-    return render(request, 'transactions/all_candidates.html',
-                  {'candidates': candidates,'total_amount': total_amount,
-                   'current_transaction': current_transaction})
+    return render(request, 'transactions/process_transaction.html',
+                  {'candidates': candidates,
+                   'total_amount': total_amount,
+                   'current_transaction': current_transaction
+                   })
 
 
 def invitations(request, current_transaction):
     candidates = Candidate.objects.filter(transaction=current_transaction)
-    if request.method == 'POST':
-        if candidates.count() != 0:
-            for candidate in candidates:
-                invite = Invitation.create(candidate.email, inviter=request.user)
-                invite.send_invitation(request)
-            current_transaction.stage = 'complete'
-            current_transaction.save()
-        return redirect(reverse('transactions:process_transaction', args=[current_transaction.id]))
+    if candidates.count() != 0:
+        for candidate in candidates:
+            users = User.objects.all()
+            if candidate.email in [user.email for user in users]:
+                OngoingProjects.objects.create(assigner=request.user, candidate=User.objects.get(email=candidate.email),
+                                               project=current_transaction.project, transaction=current_transaction.id)
+            else:
+                password = str(uuid.uuid4())
+                new_user = User.objects.create_user(email=candidate.email, password=password)
+                # send email
+                # invite = Invitation.create(candidate.email, inviter=request.user)
+                # invite.send_invitation(request)
+        current_transaction.stage = 'complete'
+        current_transaction.save()
     return render(request, 'transactions/invitations.html',
                   {'candidates': candidates, 'current_transaction': current_transaction})
 
 
-
 def my_invites(request):
     candidates = Candidate.objects.filter(email=request.user.email)
-    return  render(request, 'transactions/send_credentials.html', {'candidates': candidates})
+    return render(request, 'transactions/send_credentials.html', {'candidates': candidates})
 
 
 def sourcing(request):
@@ -126,4 +131,4 @@ def sourcing(request):
             return redirect('frontend:home')
     else:
         form = SourcingForm()
-        return render(request, 'transactions/sourcing.html', {'form':form})
+        return render(request, 'transactions/sourcing.html', {'form': form})

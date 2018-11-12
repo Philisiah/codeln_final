@@ -1,15 +1,12 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
-
+from django.shortcuts import render, redirect
 # Create your views here.
 from django.urls import reverse
 
 from accounts.forms import ProfileTypeForm, DeveloperFillingDetailsForm, RecruiterFillingDetailsForm
-from transactions.models import Transaction , Candidate
-from invitations.models import Invitation
-from projects.models import Project
+from projects.models import Project, OngoingProjects
+from transactions.models import Transaction, Candidate
 
 
 @login_required
@@ -30,6 +27,7 @@ def developer_filling_details(request, current_profile):
     return render(request, 'frontend/developer/developer_filling_details.html',
                   {'developer_filling_details_form': developer_filling_details_form})
 
+
 @login_required
 def recruiter_filling_details(request, current_profile):
     if request.method == 'POST':
@@ -47,6 +45,7 @@ def recruiter_filling_details(request, current_profile):
         recruiter_filling_details_form = RecruiterFillingDetailsForm()
     return render(request, 'frontend/recruiter/recruiter_filling_details.html',
                   {'recruiter_filling_details_form': recruiter_filling_details_form})
+
 
 @login_required
 def profile_type_selection(request, current_profile):
@@ -70,9 +69,7 @@ def index(request):
     if request.user.is_authenticated:
         current_profile = request.user.profile
         transactions = Transaction.objects.filter(user=request.user)
-        if request.user.profile.stage == 'profile_type_selection':
-            return profile_type_selection(request, current_profile)
-        elif request.user.profile.stage == 'developer_filling_details':
+        if request.user.profile.stage == 'developer_filling_details':
             return developer_filling_details(request, current_profile)
         elif request.user.profile.stage == 'recruiter_filling_details':
             return recruiter_filling_details(request, current_profile)
@@ -80,13 +77,14 @@ def index(request):
             if request.user.profile.user_type == 'developer':
                 return render(request, 'frontend/developer/developer.html')
             elif request.user.profile.user_type == 'recruiter':
-                return render(request, 'frontend/recruiter/recruiter.html',{'transactions': transactions})
+                return render(request, 'frontend/recruiter/recruiter.html', {'transactions': transactions})
     else:
         return home(request)
 
 
 def home(request):
     return render(request, 'frontend/landing.html')
+
 
 @login_required
 def activity(request):
@@ -98,80 +96,80 @@ def activity(request):
             return render(request, 'frontend/developer/my-activity.html', {'transactions': transactions})
 
 
-def tracker(request,id):
-
+def tracker(request, id):
     candidates = Candidate.objects.filter(transaction_id=id)
+    return render(request, 'frontend/recruiter/tracker.html', {'candidates': candidates})
 
-
-    return render(request, 'frontend/recruiter/tracker.html',{'candidates': candidates})
 
 def inprogress(request):
+    global ongoing_projects
     candidates = Candidate.objects.filter(email=request.user.email)
+    if request.user.profile.user_type == 'developer':
+        ongoing_projects = OngoingProjects.objects.filter(candidate=request.user)
+    elif request.user.profile.user_type == 'recruiter':
+        ongoing_projects = OngoingProjects.objects.filter(assigner=request.user)
+    return render(request, 'frontend/developer/inprogress.html',
+                  {'candidates': candidates, 'ongoing_projects': ongoing_projects})
 
-
-    return render(request, 'frontend/developer/inprogress.html',{'candidates': candidates})
 
 def invites(request):
     candidates = Candidate.objects.filter(email=request.user.email)
     return render(request, 'frontend/developer/invites.html', {'candidates': candidates})
 
 
-
-def projectdetails(request,id):
+def projectdetails(request, id):
     project = Project.objects.get(id=id)
 
-    return render(request, 'frontend/developer/projectdetails.html',{'project': project})
+    return render(request, 'frontend/developer/projectdetails.html', {'project': project})
 
-def pendingproject(request,id):
+
+def pendingproject(request, id):
     project = Project.objects.get(id=id)
-    return render(request, 'frontend/developer/pendingproject.html',{'project': project})
+    return render(request, 'frontend/developer/pendingproject.html', {'project': project})
+
 
 def pricing(request):
-
-
     return render(request, 'frontend/pricing.html')
 
+
 def dev(request):
-
-
     return render(request, 'frontend/dev.html')
 
+
 def howitworks(request):
-
-
     return render(request, 'frontend/how.html')
 
-def report(request,email,transaction_id):
+
+def report(request, email, transaction_id):
     user = User.objects.get(email=email)
-    transaction =Transaction.objects.get(id=transaction_id)
+    transaction = Transaction.objects.get(id=transaction_id)
 
+    return render(request, 'frontend/recruiter/report.html', {'user': user, 'transaction': transaction})
 
-    return render(request, 'frontend/recruiter/report.html',{'user':user,'transaction':transaction})
 
 def credits(request):
-
-
     return render(request, 'frontend/credits.html')
+
+
 def privacy(request):
-
-
     return render(request, 'frontend/privacy.html')
+
+
 def terms(request):
-
-
     return render(request, 'frontend/terms.html')
 
+
 def sample(request):
-
-
     return render(request, 'frontend/sample.html')
+
 
 def page_404(request):
     return render(request, 'frontend/error_pages/404.html')
 
+
 def page_500(request):
     return render(request, 'frontend/error_pages/500.html')
 
-def samplereport(request):
 
+def samplereport(request):
     return render(request, 'frontend/recruiter/samplereport.html')

@@ -1,127 +1,158 @@
-{% extends 'recruiterbase.html' %}
+{% extends 'partials/navigation.html' %}
 {% block title %}
 recruiter dashboard
 {% endblock %}
 {% load static %}
-{% block content %}
-<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 ">
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3  fley">
-        <div class="navbar fixed-top fine border-bottom">
-
-
-            <h5>Home</h5>
-
-            <nav>
-
-                <ul class="nav ">
-                    <!-- Authentication Links -->
-                    <li class="nav-item">
-                        <span data-feather="user">
-
-                        </span>
-                        {{ user.first_name }} {{ user.last_name }}
-                    </li>
-                    {% if request.user.is_authenticated %}
-                    <li class="nav-item">
-                        <a href="{% url 'account_logout' %}" class="navbar-item w3-opacity" title="Logout">Logout</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-item" href="{% url 'account_login' %}" class="navbar-item">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-item" href="{% url 'account_signup' %}" class="navbar-item">Register</a>
-                    </li>
-                    {% endif %}
-
-
-                </ul>
-
-            </nav>
-        </div>
-    </div>
-    <div class="alert alert-primary " role="alert">
-        Welcome {{ user.first_name }} {{ user.last_name }} to Codeln.Choose one of the paths below to start
-
-    </div>
-
-
-    <div class="row">
-
-        {% if transactions %}
-
-            <div class="col-lg-4" style="width: 100%;">
-                <div class="card recruithomecard" style="margin: auto">
-
-
-                    <a   href="{% url 'frontend:my-activity' %}">
-                        <div style="text-align: -webkit-center;">
-                            <img class="card-img-top "  src="../../../static/frontend/images/management.svg" style="width: 50%;margin-left: 25%;margin-right: 25%" alt="Card image cap">
-                        </div>
-
-                        <div class="card" style="border: 0 ">
-
-
-                            <div class="card-body">
-
-                                <h6 class="card-title text-center" style="text-align: -webkit-center;">Ongoing tests</h6>
-
+{% block below_navigation %}
+    <section class="hero">
+        <div class="hero-body">
+            <h1 class="menu-label w3-xlarge w3-center">Hi, {{ request.user.username }}
+                <br>
+                Choose one of the paths below to start
+            </h1>
+            <div class="w3-content" style="max-width: 700px">
+                <div class="columns">
+                    <div class="is-6">
+                        <a href="{% url 'projects:categories' %}">
+                            <div class="card w3-margin trans-400 w3-hover-border-deep-purple w3-bottombar w3-border-white w3-topbar w3-rightbar w3-leftbar"
+                                 style="cursor: pointer">
+                                <div class="card-image">
+                                    <figure class="image is-4by3 w3-margin">
+                                        <img src="{% static 'frontend/images/interview.svg' %}"
+                                             alt="Placeholder image">
+                                    </figure>
+                                </div>
+                                <div class="card-content">
+                                    <div class="content">
+                                        <h1 class="w3-xlarge w3-center">Create a new test</h1>
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                        Phasellus nec iaculis mauris.
+                                        Phasellus nec iaculis mauris.
+                                        Phasellus nec iaculis mauris.
+                                    </div>
+                                </div>
                             </div>
-
-                        </div>
-                    </a>
-                </div>
-            </div>
-        {% else %}
-
-
-        {% endif %}
-
-
-
-        <div class="col-lg-4" style="width: 100%;">
-            <div class="card recruithomecard" style="margin: auto">
-            <a   href="{% url 'projects:categories' %}">
-                <div style="text-align: -webkit-center;">
-                <img class="card-img-top" src="../../../static/frontend/images/interview.svg" style="width: 50%;margin-left: 25%;margin-right: 25%" alt="Card image cap">
-                </div>
-            <div class="card" style="border: 0 ">
-
-
-                <div class="card-body">
-
-                    <h6 class="card-title text-center" style="text-align: -webkit-center;">Create a new test</h6>
-
-                </div>
-
-            </div>
-            </a>
-            </div>
-        </div>
-        <div class="col-lg-4" style="width: 100%;">
-            <div class="card recruithomecard" style="margin: auto">
-            <a target="_blank" href="{% url 'transactions:sourcing' %}">
-                <div style="text-align: -webkit-center;">
-                <img class="card-img-top" src="../../../static/frontend/images/search.svg" style="width: 50%;margin-left: 25%;margin-right: 25%" alt="Card image cap">
-                </div>
-                <div class="card" style="border: 0 ">
-
-
-                    <div class="card-body">
-
-                        <h6 class="card-title text-center" style="text-align: -webkit-center;">Source candidates</h6>
-
+                        </a>
                     </div>
-
+                    <div class="is-6">
+                        <a href="{% url 'frontend:my-activity' %}">
+                            <div class="card w3-margin trans-400 w3-hover-border-deep-purple w3-bottombar w3-border-white w3-topbar w3-rightbar w3-leftbar"
+                                 style="cursor: pointer">
+                                <div class="card-image">
+                                    <figure class="image is-4by3 w3-margin">
+                                        <img src="{% static 'frontend/images/management.svg' %}"
+                                             alt="Placeholder image">
+                                    </figure>
+                                </div>
+                                <div class="card-content">
+                                    <div class="content">
+                                        <h1 class="w3-xlarge w3-center">Ongoing tests</h1>
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                                        Phasellus nec iaculis mauris.
+                                        Phasellus nec iaculis mauris.
+                                        Phasellus nec iaculis mauris.
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
-            </a>
             </div>
+
         </div>
+    </section>
 
-    </div>
-
-</main>
-
-</div>
+    {#<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4 ">#}
+    {#    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3  fley">#}
+    {#        <div class="navbar fixed-top fine border-bottom">#}
+    {##}
+    {##}
+    {#            <h5>Home</h5>#}
+    {##}
+    {#        </div>#}
+    {#    </div>#}
+    {#    <div class="alert alert-primary " role="alert">#}
+    {#        Welcome {{ user.first_name }} {{ user.last_name }} to Codeln.Choose one of the paths below to start#}
+    {##}
+    {#    </div>#}
+    {##}
+    {##}
+    {#    <div class="row">#}
+    {##}
+    {#        {% if transactions %}#}
+    {##}
+    {#            <div class="col-lg-4" style="width: 100%;">#}
+    {#                <div class="card recruithomecard" style="margin: auto">#}
+    {##}
+    {##}
+    {#                    <a   href="{% url 'frontend:my-activity' %}">#}
+    {#                        <div style="text-align: -webkit-center;">#}
+    {#                            <img class="card-img-top "  src="../../../static/frontend/images/management.svg" style="width: 50%;margin-left: 25%;margin-right: 25%" alt="Card image cap">#}
+    {#                        </div>#}
+    {##}
+    {#                        <div class="card" style="border: 0 ">#}
+    {##}
+    {##}
+    {#                            <div class="card-body">#}
+    {##}
+    {#                                <h6 class="card-title text-center" style="text-align: -webkit-center;">Ongoing tests</h6>#}
+    {##}
+    {#                            </div>#}
+    {##}
+    {#                        </div>#}
+    {#                    </a>#}
+    {#                </div>#}
+    {#            </div>#}
+    {#        {% else %}#}
+    {##}
+    {##}
+    {#        {% endif %}#}
+    {##}
+    {##}
+    {##}
+    {#        <div class="col-lg-4" style="width: 100%;">#}
+    {#            <div class="card recruithomecard" style="margin: auto">#}
+    {#            <a   href="{% url 'projects:categories' %}">#}
+    {#                <div style="text-align: -webkit-center;">#}
+    {#                <img class="card-img-top" src="../../../static/frontend/images/interview.svg" style="width: 50%;margin-left: 25%;margin-right: 25%" alt="Card image cap">#}
+    {#                </div>#}
+    {#            <div class="card" style="border: 0 ">#}
+    {##}
+    {##}
+    {#                <div class="card-body">#}
+    {##}
+    {#                    <h6 class="card-title text-center" style="text-align: -webkit-center;">Create a new test</h6>#}
+    {##}
+    {#                </div>#}
+    {##}
+    {#            </div>#}
+    {#            </a>#}
+    {#            </div>#}
+    {#        </div>#}
+    {#        <div class="col-lg-4" style="width: 100%;">#}
+    {#            <div class="card recruithomecard" style="margin: auto">#}
+    {#            <a target="_blank" href="{% url 'transactions:sourcing' %}">#}
+    {#                <div style="text-align: -webkit-center;">#}
+    {#                <img class="card-img-top" src="../../../static/frontend/images/search.svg" style="width: 50%;margin-left: 25%;margin-right: 25%" alt="Card image cap">#}
+    {#                </div>#}
+    {#                <div class="card" style="border: 0 ">#}
+    {##}
+    {##}
+    {#                    <div class="card-body">#}
+    {##}
+    {#                        <h6 class="card-title text-center" style="text-align: -webkit-center;">Source candidates</h6>#}
+    {##}
+    {#                    </div>#}
+    {##}
+    {#                </div>#}
+    {#            </a>#}
+    {#            </div>#}
+    {#        </div>#}
+    {##}
+    {#    </div>#}
+    {##}
+    {#</main>#}
+    {##}
+    {#</div>#}
 
 {% endblock %}

@@ -1,65 +1,54 @@
-{% extends 'candidatesbase.html' %}
+{% extends 'partials/navigation.html' %}
 {% block title %}
-Project in progress
+    Project in progress
 {% endblock %}
-{%load static %}
-{% block content %}
-<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+{% load static %}
+{% block below_navigation %}
+    <div class="hero is-small is-black">
+        <div class="hero-body">
+            <h1 class="w3-center menu-label w3-xlarge">
+                {% if request.user.profile.user_type == 'developer' %}
+                    Ongoing Projects
+                {% elif request.user.profile.user_type == 'recruiter' %}
+                    Ongoing Tests
+                {% endif %}
+            </h1>
+        </div>
+    </div>
 
-
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3  fley">
-        <div class="navbar fixed-top fine border-bottom">
-
-            <h5>Projects in progress</h5>
-
-            <nav>
-
-                <ul class="nav ">
-                    <li class="nav-item">
-                        <span data-feather="user">
-
+    <section class="w3-margin-top" style="max-width: 1000px; margin: auto">
+        <div class="columns is-multiline">
+            {% for ongoing_project in ongoing_projects %}
+                <div class="column is-12">
+                    <a href="#">
+                        <div class="card">
+                            <div class="card-content">
+                                <label for="" class="menu-label">Candidate</label>
+                                <h1 class="w3-large">{{ ongoing_project.candidate.username }}</h1>
+                                <label for="" class="menu-label">Project Name</label>
+                                <h1 class="w3-xlarge">{{ ongoing_project.project.name }}</h1>
+                                <label for="" class="menu-label">Project Description</label>
+                                <p>
+                                    {{ ongoing_project.project.description }}
+                                </p>
+                                <span class="w3-padding-small w3-round w3-light-grey">
+                           &centerdot; Language: {{ ongoing_project.project.framework.language }}
                         </span>
-                        {{ user.first_name }} {{ user.last_name }}
-                    </li>
-                    <!-- Authentication Links -->
-                    {% if request.user.is_authenticated %}
-                    <li class="nav-item">
-                        <a href="{% url 'account_logout' %}" class="navbar-item w3-opacity" title="Logout">Logout</a>
-                    </li>
-                    {% else %}
-                    <li class="nav-item">
-                        <a class="nav-item" href="{% url 'account_login' %}" class="navbar-item">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-item" href="{% url 'account_signup' %}" class="navbar-item">Register</a>
-                    </li>
-                    {% endif %}
-
-
-                </ul>
-
-            </nav>
-        </div>
-    </div>
-
-    <div class="row">
-        {% for foo in candidates %}
-
-        <div class="col-lg-4">
-
-            <a href="{% url 'frontend:projectdetails' foo.transaction.project.id %}">
-                <div class="card" style="width: 18rem;height: 100%">
-                    <img class="card-img-top" src="{{ foo.transaction.project.projectimage1 }}" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ foo.transaction.project.name }}</h5>
-
-                    </div>
+                                &nbsp;
+                                <span class="w3-padding-small w3-round w3-light-grey">
+                           &centerdot; Framework: {{ ongoing_project.project.framework }}
+                        </span>
+                                &nbsp;
+                                <span class="w3-padding-small w3-round w3-light-grey">
+                           &centerdot; Level: {{ ongoing_project.project.level|capfirst }}
+                        </span>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-
-            </a>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
+    </section>
 
-</main>
+
 {% endblock %}
