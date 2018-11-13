@@ -26,15 +26,13 @@ def project_list(request, id):
     return render(request, 'projects/all_projects.html', {'projecttypes': projecttypes, 'categoryname': categoryname})
 
 
-def devtypes(request, id):
-    # TODO: filter projects by framework, language and category using django filter
-
-    categoryname = Devtype.objects.get(id=id)
-    devtypes = Project.objects.filter(devtype_id=id)
-    return render(request, 'projects/devtypes.html', {'devtypes': devtypes, 'categoryname': categoryname})
+def devtypes_view(request, id):
+    devtype = Devtype.objects.get(id=id)
+    projects = Project.objects.filter(devtype=devtype)
+    return render(request, 'projects/devtypes.html', {'projects': projects, 'devtype': devtype})
 
 
-def projecttypes(request, id):
+def projecttypes_view(request, id):
     projecttype = Projecttype.objects.get(id=id)
     projects = Project.objects.filter(projecttype=projecttype)
     return render(request, 'projects/projecttype.html', {'projects': projects, 'projecttype': projecttype})

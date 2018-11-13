@@ -1,13 +1,12 @@
-import uuid
-
 from django.contrib.auth.models import User
 from django.core.mail import send_mail, BadHeaderError
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from invitations.models import Invitation
 
-from projects.models import Project, OngoingProjects
+from projects.models import Project
 from transactions.forms import CandidateForm, SourcingForm
-from transactions.models import Transaction, Candidate
+from transactions.models import Transaction, Candidate, TestInvitation
 
 
 # payments view
@@ -85,16 +84,16 @@ def invitations(request, current_transaction):
     candidates = Candidate.objects.filter(transaction=current_transaction)
     if candidates.count() != 0:
         for candidate in candidates:
-            users = User.objects.all()
-            if candidate.email in [user.email for user in users]:
-                OngoingProjects.objects.create(assigner=request.user, candidate=User.objects.get(email=candidate.email),
-                                               project=current_transaction.project, transaction=current_transaction.id)
+            TestInvitation.objects.create(email=candidate.email)
+            if candidate.email in [user.email for user in User.objects.all()]:
+                pass
+                # send notification
             else:
-                password = str(uuid.uuid4())
-                new_user = User.objects.create_user(email=candidate.email, password=password)
-                # send email
-                # invite = Invitation.create(candidate.email, inviter=request.user)
-                # invite.send_invitation(request)
+                # send email telling them to signup and accept invitation
+                # Consideration: if the user isn't a user already, should an OngoingProject be created for the user?
+                # That is Invitation accepted automatically
+                invite = Invitation.create(candidate.email, inviter=request.user)
+                invite.send_invitation(request)
         current_transaction.stage = 'complete'
         current_transaction.save()
     return render(request, 'transactions/invitations.html',

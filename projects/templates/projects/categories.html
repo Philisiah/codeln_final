@@ -18,7 +18,7 @@
             {% for projectype in projecttypes %}
                 <div class="column is-4">
                     <a href="{% url 'projects:projecttypes' projectype.id %}">
-                        <div class="card">
+                        <div class="card w3-hover-border-deep-purple w3-bottombar w3-border-white w3-topbar w3-rightbar w3-leftbar trans-400">
                             <div class="card-content">
                                 <h1 class="w3-xlarge">{{ projectype.name }}</h1>
                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci amet animi delectus,
@@ -40,15 +40,17 @@
         <div class="columns is-multiline">
             {% for devtype in devtypes %}
                 <div class="column is-4">
-                    <div class="card">
-                        <div class="card-content">
-                            <h1 class="w3-xlarge">{{ devtype.name }}</h1>
-                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci amet animi delectus,
-                            dolore
-                            esse est exercitationem explicabo illum ipsa itaque laudantium maiores molestiae officia
-                            provident quia, quis sint tempora voluptas!
+                    <a href="{% url 'projects:devtypes' devtype.id %}">
+                        <div class="card w3-hover-border-deep-purple w3-bottombar w3-border-white w3-topbar w3-rightbar w3-leftbar trans-400">
+                            <div class="card-content">
+                                <h1 class="w3-xlarge">{{ devtype.name }}</h1>
+                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci amet animi delectus,
+                                dolore
+                                esse est exercitationem explicabo illum ipsa itaque laudantium maiores molestiae officia
+                                provident quia, quis sint tempora voluptas!
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             {% endfor %}
         </div>

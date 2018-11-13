@@ -1,5 +1,6 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
+
 from projects.models import Project
 
 
@@ -23,14 +24,17 @@ class Transaction(models.Model):
     completed = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
 
-    def allcandidates(self):
+    @property
+    def all_candidates(self):
         candidates = Candidate.objects.filter(transaction=self.id)
         return candidates
 
+    @property
     def amount(self):
-        if self.allcandidates().count() <= 10:
+        global total_amount
+        if self.all_candidates().count() <= 10:
             total_amount = 200
-        elif self.allcandidates().count() > 10 and self.allcandidates().count() <= 20:
+        elif self.all_candidates().count() > 10 and self.all_candidates().count() <= 20:
             total_amount = 350
         return total_amount
 
@@ -54,5 +58,9 @@ class Candidate(models.Model):
         return "{}, {}".format(self.first_name, self.last_name)
 
 
+class TestInvitation(models.Model):
+    is_accepted = models.NullBooleanField(null=True)
+    email = models.EmailField()
 
-
+    def __str__(self):
+        return self.email

@@ -54,39 +54,39 @@
 
                 {% if request.user.profile.user_type == 'developer' %}
                     <li>
-                        <a href="/">
+                        <a class="menu-label w3-large" href="/">
                             Home
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a class="menu-label w3-large" href="#">
                             Call to Apply
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'frontend:inprogress' %}">
+                        <a class="menu-label w3-large" href="{% url 'frontend:inprogress' %}">
                             Ongoing Projects
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a class="menu-label w3-large" href="#">
                             My Profile
                         </a>
                     </li>
 
                 {% elif request.user.profile.user_type == 'recruiter' %}
                     <li>
-                        <a href="/">
+                        <a class="menu-label w3-large" href="/">
                             Home
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'frontend:inprogress' %}">
+                        <a class="menu-label w3-large" href="{% url 'frontend:inprogress' %}">
                             Ongoing Test
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a class="menu-label w3-large" href="#">
                             Source Candidates
                         </a>
                     </li>

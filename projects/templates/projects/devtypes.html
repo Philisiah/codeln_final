@@ -1,78 +1,29 @@
-{% extends 'recruiterbase.html' %}
-{% block title %}
-    all projects
-{% endblock %}
-{%load static %}
-
-{% block content %}
-    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3  fley">
-            <div class="navbar fixed-top fine border-bottom">
-
-                <h5>Codeln Projects</h5>
-
-                <nav>
-
-                    <ul class="nav ">
-                        <!-- Authentication Links -->
-                        <li class="nav-item">
-                        <span data-feather="user">
-
-                        </span>
-                            {{ user.first_name }} {{ user.last_name }}
-                        </li>
-                        {% if request.user.is_authenticated %}
-                            <li class="nav-item">
-                                <a href="{% url 'account_logout' %}" class="navbar-item w3-opacity" title="Logout">Logout</a>
-                            </li>
-                        {% else %}
-                            <li class="nav-item">
-                                <a class="nav-item" href="{% url 'account_login' %}" class="navbar-item">Login</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-item" href="{% url 'account_signup' %}" class="navbar-item">Register</a>
-                            </li>
-                        {% endif %}
-
-
-                    </ul>
-
-                </nav>
-            </div>
-
+{% extends 'partials/navigation.html' %}
+{% block below_navigation %}
+    <div class="hero is-small is-black">
+        <div class="hero-body">
+            <h1 class="w3-center menu-label w3-xlarge">
+                {{ devtype.name }}
+                Projects
+            </h1>
         </div>
-        <h5>{{ categoryname.name }} projects</h5>
-
-        <div class="row" >
-            {% for foo in devtypes %}
-                <div class="col-lg-3" style="margin-right: 3%">
-                    <a href="{% url 'projects:project' foo.id%}" style="text-decoration: none;">
-                        <div class="card" style="width: 18rem;">
-                            <img class="card-img-top" src="{{foo.projectimage1}}" alt="Card image cap">
-                            <div class="card-body">
-                                <p class="card-text">{{ foo.name }}
-                                    <span class="badge badge-primary">Level : {{ foo.level }}</span>
+    </div>
+    <section class="w3-margin-top" style="max-width: 1000px; margin: auto">
+        <div class="columns is-multiline">
+            {% for project in projects %}
+                <div class="column is-4">
+                    <a href="{% url 'projects:project' project.id %}">
+                        <div class="card">
+                            <div class="card-content">
+                                <h1 class="w3-xlarge">{{ project.name }}</h1>
+                                <p>
+                                    {{ project.description }}
                                 </p>
-                                <p> Concept tested : {{ foo.concept }}</p>
                             </div>
-                            <div class="card-footer text-muted">
-                                <span class="badge badge-info">Framework : {{ foo.framework.name }}</span>
-                                <span class="badge badge-info">Language : {{ foo.framework.language }}</span>
-                                <span data-feather="heart"></span>
-                            </div>
-
                         </div>
                     </a>
-
                 </div>
             {% endfor %}
         </div>
-
-
-
-
-
-    </main>
-
-
+    </section>
 {% endblock %}
