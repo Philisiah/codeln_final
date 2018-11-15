@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from projects.models import Project, Framework, Language, Projecttype, Devtype, OngoingProjects
+from projects.models import Project, Framework, Language, ProjectType, DevType, OngoingProjects, ProjectLevel, \
+    RecruiterProject
 
 
 # Register your models here.
@@ -29,10 +30,15 @@ class ProjecttypeAdmin(admin.ModelAdmin):
     pass
 
 
-admin.site.register(Projecttype, ProjecttypeAdmin)
+admin.site.register(ProjectType, ProjecttypeAdmin)
 
 
 class DevtypeAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(ProjectLevel)
+class ProjectLevelAdmin(admin.ModelAdmin):
     pass
 
 
@@ -41,4 +47,9 @@ class OngoingProjectsAdmin(admin.ModelAdmin):
     pass
 
 
-admin.site.register(Devtype, DevtypeAdmin)
+@admin.register(RecruiterProject)
+class RecruiterProjectAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(DevType, DevtypeAdmin)

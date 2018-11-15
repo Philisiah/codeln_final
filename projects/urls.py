@@ -16,15 +16,14 @@ Including another URLconf
 
 from django.urls import path
 
-from projects.views import project_list, project, categories, devtypes_view, projecttypes_view
+from projects.views import project_list, project_view, categories_view, dev_type_view, project_type_view
 
 app_name = 'projects'
 urlpatterns = [
-    # path('', project_categories, name='categories'y),
+    path('<int:id>/', project_view, name='project'),
     path('all-projects/<int:id>/', project_list, name='all-projects'),
-    path('devtypes/<int:id>/', devtypes_view, name='devtypes'),
-    path('projecttypes/<int:id>/', projecttypes_view, name='projecttypes'),
-    path('categories/', categories, name='categories'),
-    path('project/<int:id>/', project, name='project'),
+    path('dev-type/<slug:slug>/', dev_type_view, name='dev-type'),
+    path('project-type/<slug:slug>/', project_type_view, name='project-type'),
+    path('categories/', categories_view, name='categories'),
 
 ]

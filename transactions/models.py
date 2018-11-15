@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from projects.models import Project
+from projects.models import Project, RecruiterProject
 
 
 # Create your models here.
@@ -18,18 +18,16 @@ class Transaction(models.Model):
         ('complete', 'complete'),
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    recruiter_project = models.ForeignKey(RecruiterProject, on_delete=models.CASCADE, null=True)
     stage = models.CharField(choices=STAGE_CHOICES, default='created', max_length=100)
     created = models.DateTimeField(auto_now_add=True)
     completed = models.DateTimeField(auto_now=True)
     paid = models.BooleanField(default=False)
 
-    @property
     def all_candidates(self):
         candidates = Candidate.objects.filter(transaction=self.id)
         return candidates
 
-    @property
     def amount(self):
         global total_amount
         if self.all_candidates().count() <= 10:
@@ -61,6 +59,7 @@ class Candidate(models.Model):
 class TestInvitation(models.Model):
     is_accepted = models.NullBooleanField(null=True)
     email = models.EmailField()
+    recruiter_project = models.ForeignKey(RecruiterProject, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return self.email

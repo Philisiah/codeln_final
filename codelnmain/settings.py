@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'storages',
     'bootstrap4',
     'django_forms_bootstrap',
+    'taggit',
 
 ]
 
@@ -166,7 +167,11 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 #email settings
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+if ENVIRONMENT == 'local':
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
@@ -174,7 +179,11 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='EMAIL_HOST_PASSWORD')
 
 # allauth settings
-ACCOUNT_AUTHENTICATION_METHOD = ('email')
+if ENVIRONMENT == 'local':
+    ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+else:
+    ACCOUNT_AUTHENTICATION_METHOD = 'email'
+
 ACCOUNT_SIGNUP_PASSWORD_VERIFICATION = False
 ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
 ACCOUNT_UNIQUE_EMAIL = True
@@ -248,3 +257,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 if ENVIRONMENT != 'local':
     pass
+
+# tagging
+TAGGIT_CASE_INSENSITIVE = True

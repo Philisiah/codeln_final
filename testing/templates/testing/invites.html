@@ -1,0 +1,46 @@
+{% extends 'partials/navigation.html' %}
+{% block title %}
+    Call to Apply
+{% endblock %}
+{% load static %}
+{% block below_navigation %}
+    <div class="hero is-small is-black">
+        <div class="hero-body">
+            <h1 class="w3-center menu-label w3-xlarge">
+                Call to Apply
+            </h1>
+        </div>
+    </div>
+
+    <section class="w3-margin-top" style="max-width: 1000px; margin: auto">
+        <div class="columns is-multiline">
+            {% for invite in invites %}
+                <div class="column is-4">
+                    <div class="card">
+                        <div class="card-content">
+                            <label for="" class="menu-label">Project Name</label>
+                            <h1 class="w3-xlarge">{{ invite.recruiter_project.project.name }}</h1>
+                            <label for="" class="menu-label">Recruiter</label>
+                            <h1>{{ invite.recruiter_project.recruiter }}</h1>
+                            <label for="" class="menu-label">Project Description</label>
+                            <p>
+                                {{ invite.recruiter_project.project.description }}
+                            </p>
+                            </span>
+                        </div>
+                        <footer class="card-footer">
+                            <a href=""
+                               class="card-footer-item w3-btn w3-green w3-border-green has-text-weight-bold">Accepted
+                                Invitation</a>
+                            <a href=""
+                               class="card-footer-item w3-btn w3-opacity">Decline Invitation</a>
+                        </footer>
+                    </div>
+
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+
+
+{% endblock %}

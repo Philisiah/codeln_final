@@ -9,7 +9,7 @@
     <div class="w3-padding-small">
         <div class="columns is-centered">
             <div class="column is-three-fifths">
-                <form action="." method="post">
+                <form action="{% url 'transactions:process_transaction' current_transaction.id %}" method="post">
                     {% csrf_token %}
                     <div class="field">
                         <label class="label">First name</label>

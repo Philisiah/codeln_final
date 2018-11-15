@@ -1,11 +1,10 @@
-from django.contrib.auth.models import User
 from django.core.mail import send_mail, BadHeaderError
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from invitations.models import Invitation
 
-from projects.models import Project
-from transactions.forms import CandidateForm, SourcingForm
+from projects.models import Project, RecruiterProject, Language, Framework
+from transactions.forms import CandidateForm, SourcingForm, StackForm
 from transactions.models import Transaction, Candidate, TestInvitation
 
 
@@ -13,10 +12,24 @@ from transactions.models import Transaction, Candidate, TestInvitation
 
 
 # Create your views here.
-def transaction(request, id):
-    project = Project.objects.get(id=id)
-    new_transaction = Transaction.objects.create(user=request.user, project=project, stage='upload-candidates')
-    return redirect(reverse('transactions:process_transaction', args=[new_transaction.id]))
+def transaction_view(request, id):
+    if request.method == 'POST':
+        stack_form = StackForm(request.POST)
+        if stack_form.is_valid():
+            project = Project.objects.get(id=id)
+            recruiter_project, created = RecruiterProject.objects.get_or_create(recruiter=request.user,
+                                                                                project=project,
+                                                                                language=Language.objects.get(
+                                                                                    name=stack_form.cleaned_data[
+                                                                                        'language']),
+                                                                                framework=Framework.objects.get(
+                                                                                    name=stack_form.cleaned_data[
+                                                                                        'framework']))
+            new_transaction = Transaction.objects.create(user=request.user, recruiter_project=recruiter_project,
+                                                         stage='upload-candidates')
+            return redirect(reverse('transactions:process_transaction', args=(new_transaction.id,)))
+    else:
+        return HttpResponse('Ok')
 
 
 def process_transaction(request, id):
@@ -84,16 +97,17 @@ def invitations(request, current_transaction):
     candidates = Candidate.objects.filter(transaction=current_transaction)
     if candidates.count() != 0:
         for candidate in candidates:
-            TestInvitation.objects.create(email=candidate.email)
-            if candidate.email in [user.email for user in User.objects.all()]:
-                pass
-                # send notification
-            else:
-                # send email telling them to signup and accept invitation
-                # Consideration: if the user isn't a user already, should an OngoingProject be created for the user?
-                # That is Invitation accepted automatically
-                invite = Invitation.create(candidate.email, inviter=request.user)
-                invite.send_invitation(request)
+            TestInvitation.objects.create(email=candidate.email,
+                                          recruiter_project=current_transaction.recruiter_project)
+            # if candidate.email in [user.email for user in User.objects.all()]:
+            #     pass
+            #     # send notification
+            # else:
+            #     # send email telling them to signup and accept invitation
+            #     # Consideration: if the user isn't a user already, should an OngoingProject be created for the user?
+            #     # That is Invitation accepted automatically
+            #     invite = Invitation.create(candidate.email, inviter=request.user)
+            #     invite.send_invitation(request)
         current_transaction.stage = 'complete'
         current_transaction.save()
     return render(request, 'transactions/invitations.html',

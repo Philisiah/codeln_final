@@ -10,11 +10,10 @@ from projects.models import Language, Framework
 
 class Profile(models.Model):
     USER_TYPE_CHOICES = (
-        ('recruiter', 'RECRUITER'),
-        ('developer', 'DEVELOPER'),
+        ('recruiter', 'Recruiter'),
+        ('developer', 'Developer'),
     )
     STAGE_CHOICES = (
-        ('profile_type_selection', 'profile_type_selection'),
         ('recruiter_filling_details', 'recruiter_filling_details'),
         ('developer_filling_details', 'developer_filling_details'),
         ('complete', 'complete'),
@@ -25,16 +24,17 @@ class Profile(models.Model):
         ('4-above', '4-above'),
     )
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    user_type = models.CharField(choices=USER_TYPE_CHOICES, null=True, blank=True, max_length=30)
-    stage = models.CharField(choices=STAGE_CHOICES, default='profile_type_selection', max_length=100)
+    user_type = models.CharField(choices=USER_TYPE_CHOICES, null=True, blank=True, max_length=30, default='developer')
+    stage = models.CharField(choices=STAGE_CHOICES, default='developer_filling_details', max_length=100)
     profile_photo = models.ImageField(upload_to='users/%Y/%m/%d', blank=True)
     date_of_birth = models.DateTimeField(null=True, blank=True)
-    phone_number = models.IntegerField(null=True, blank=True)
+    phone_number = models.CharField(max_length=140, null=True, blank=True)
     # developer profile
     github_repo = models.URLField(blank=True, null=True, )
-    language = models.ForeignKey(Language, on_delete=models.DO_NOTHING,
-                                              related_name='languages', null=True)
-    framework = models.ForeignKey(Framework, on_delete=models.DO_NOTHING, related_name='frameworks', null=True)
+    language = models.ForeignKey(Language, on_delete=models.SET_NULL,
+                                 related_name='languages', null=True, blank=True)
+    framework = models.ForeignKey(Framework, on_delete=models.DO_NOTHING, related_name='frameworks', null=True,
+                                  blank=True)
     years = models.CharField(max_length=30, choices=YEARS_ACTIVE_CHOICES, null=True, blank=True)
     # recruiter profile
     company = models.CharField(max_length=140, null=True, blank=True)

@@ -1,5 +1,6 @@
 from django.contrib import admin
-from transactions.models import Candidate, Transaction
+
+from transactions.models import Candidate, Transaction, TestInvitation
 
 
 # Register your models here.
@@ -21,4 +22,9 @@ class TransactionAdmin(admin.ModelAdmin):
     ]
 
 
+class TestInvitationAdmin(admin.ModelAdmin):
+    pass
+
+
+admin.site.register(TestInvitation, TestInvitationAdmin)
 admin.site.register(Transaction, TransactionAdmin)

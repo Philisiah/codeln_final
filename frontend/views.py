@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
@@ -21,6 +22,7 @@ def developer_filling_details(request, current_profile):
             current_profile.years = developer_filling_details_form.cleaned_data['years']
             current_profile.stage = 'complete'
             current_profile.save()
+            messages.success(request, 'Profile details successfully saved')
             return redirect(reverse('frontend:index'))
     else:
         developer_filling_details_form = DeveloperFillingDetailsForm()

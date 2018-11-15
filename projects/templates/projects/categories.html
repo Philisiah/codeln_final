@@ -1,11 +1,11 @@
 {% extends 'partials/navigation.html' %}
 {% block title %}
-    project categories
+    Project Categories
 {% endblock %}
 {% block below_navigation %}
-    <div class="hero is-small is-black">
+    <div class="hero is-small is-info">
         <div class="hero-body">
-            <h1 class="w3-center menu-label w3-xlarge">
+            <h1 class="w3-center menu-label w3-text-white w3-xlarge">
                 Which skill are you looking to test for?
             </h1>
         </div>
@@ -15,16 +15,15 @@
             Projects
         </h1>
         <div class="columns is-multiline">
-            {% for projectype in projecttypes %}
+            {% for project_type in project_types %}
                 <div class="column is-4">
-                    <a href="{% url 'projects:projecttypes' projectype.id %}">
+                    <a href="{% url 'projects:project-type' project_type.slug %}">
                         <div class="card w3-hover-border-deep-purple w3-bottombar w3-border-white w3-topbar w3-rightbar w3-leftbar trans-400">
-                            <div class="card-content">
-                                <h1 class="w3-xlarge">{{ projectype.name }}</h1>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci amet animi delectus,
-                                dolore
-                                esse est exercitationem explicabo illum ipsa itaque laudantium maiores molestiae officia
-                                provident quia, quis sint tempora voluptas!
+                            <div class="card-content" style="height: 200px;">
+                                <h1 class="w3-xlarge">{{ project_type.name }}</h1>
+                                <p>
+                                    {{ project_type.description|truncatechars:160 }}
+                                </p>
                             </div>
                         </div>
                     </a>
@@ -38,16 +37,14 @@
             Developer Types
         </h1>
         <div class="columns is-multiline">
-            {% for devtype in devtypes %}
+            {% for dev_type in dev_types %}
                 <div class="column is-4">
-                    <a href="{% url 'projects:devtypes' devtype.id %}">
+                    <a href="{% url 'projects:dev-type' dev_type.slug %}">
                         <div class="card w3-hover-border-deep-purple w3-bottombar w3-border-white w3-topbar w3-rightbar w3-leftbar trans-400">
-                            <div class="card-content">
-                                <h1 class="w3-xlarge">{{ devtype.name }}</h1>
+                            <div class="card-content" style="height: 200px;">
+                                <h1 class="w3-xlarge">{{ dev_type.name }}</h1>
                                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci amet animi delectus,
                                 dolore
-                                esse est exercitationem explicabo illum ipsa itaque laudantium maiores molestiae officia
-                                provident quia, quis sint tempora voluptas!
                             </div>
                         </div>
                     </a>
@@ -55,79 +52,6 @@
             {% endfor %}
         </div>
     </section>
-    {% for devtype in devtypes %}
-        {% if devtype.name == 'frontend' %}
-            <div class="col-lg-3" style="width: 100%;">
-                <div class="card recruithomecard" style="margin: auto">
-
-
-                    <a href="{% url 'projects:devtypes' devtype.id %}">
-                        <div style="text-align: -webkit-center;">
-                            <img class="card-img-top categoriescard "
-                                 src="../../static/frontend/images/web-design.svg"
-                                 style="margin-left: 25%;margin-right: 25%" alt="Card image cap">
-                        </div>
-
-                        <div class="card" style="border: 0 ">
-
-
-                            <div class="card-body">
-
-                                <h6 class="card-title text-center" style="text-align: -webkit-center;">Frontend
-                                    development</h6>
-
-                            </div>
-
-                        </div>
-                    </a>
-                </div>
-            </div>
-        {% elif devtype.name == 'backend' %}
-            <div class="col-lg-3" style="width: 100%;">
-                <div class="card recruithomecard" style="margin: auto">
-                    <a href="{% url 'projects:devtypes' devtype.id %}">
-                        <div style="text-align: -webkit-center;">
-                            <img class="card-img-top categoriescard" src="../../static/frontend/images/web.svg"
-                                 style="margin-left: 25%;margin-right: 25%" alt="Card image cap">
-                        </div>
-                        <div class="card" style="border: 0 ">
-
-
-                            <div class="card-body">
-
-                                <h6 class="card-title text-center" style="text-align: -webkit-center;">Backend
-                                    development</h6>
-
-                            </div>
-
-                        </div>
-                    </a>
-                </div>
-            </div>
-        {% elif devtype.name == 'fullstack' %}
-            <div class="col-lg-3" style="width: 100%;">
-                <div class="card recruithomecard" style="margin: auto">
-                    <a href="{% url 'projects:devtypes' devtype.id %}">
-                        <div style="text-align: -webkit-center;">
-                            <img class="card-img-top categoriescard" src="../../static/frontend/images/network.svg"
-                                 style="margin-left: 25%;margin-right: 25%" alt="Card image cap">
-                        </div>
-                        <div class="card" style="border: 0 ">
-
-
-                            <div class="card-body">
-
-                                <h6 class="card-title text-center" style="text-align: -webkit-center;">Fullstack
-                                    development</h6>
-
-                            </div>
-
-                        </div>
-                    </a>
-                </div>
-            </div>
-        {% endif %}
-    {% endfor %}
 
 
 

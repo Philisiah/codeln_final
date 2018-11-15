@@ -1,13 +1,29 @@
 from django import forms
-from transactions.models import Candidate, Transaction
-
 from django.forms import ModelForm, Form
+
+from projects.models import Language, Framework
+from transactions.models import Candidate
 
 
 class CandidateForm(ModelForm):
     class Meta:
         model = Candidate
         exclude = ('transaction',)
+
+
+def language_choices():
+    return tuple([(language.name, language.name)
+                  for language in Language.objects.all()])
+
+
+def framework_choices():
+    return tuple([(framework.name, framework.name)
+                  for framework in Framework.objects.all()])
+
+
+class StackForm(forms.Form):
+    language = forms.ChoiceField(choices=language_choices, widget=forms.RadioSelect())
+    framework = forms.ChoiceField(choices=framework_choices, widget=forms.RadioSelect())
 
 
 class SourcingForm(Form):

@@ -1,12 +1,11 @@
 from django.contrib.auth.models import User
 from django.db import models
+from django.template.defaultfilters import slugify
+from django.urls import reverse
+from taggit.managers import TaggableManager
 
 
 # Create your models here.
-
-# TODO: add model for category to classify all projects using project category, can be multiple ie frontend, backend
-# TODO: categorise language into frontend, backend etc
-
 
 class Language(models.Model):
     name = models.CharField(max_length=140)
@@ -23,17 +22,46 @@ class Framework(models.Model):
         return self.name
 
 
-class Devtype(models.Model):
+class DevType(models.Model):
     name = models.CharField(max_length=140)
     description = models.TextField(null=True, blank=True)
+    slug = models.SlugField(unique=True, blank=True)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('projects:dev-type', args=(self.slug,))
+
+    def save(self, *args, **kwargs):
+        if self._state.adding:
+            self.slug = slugify(self.name)
+            super().save(*args, **kwargs)
+        else:
+            super().save(*args, **kwargs)
+
+
+class ProjectLevel(models.Model):
+    name = models.CharField(max_length=255)
 
     def __str__(self):
         return self.name
 
 
-class Projecttype(models.Model):
+class ProjectType(models.Model):
     name = models.CharField(max_length=140)
     description = models.TextField(null=True, blank=True)
+    slug = models.SlugField(unique=True, blank=True)
+
+    def get_absolute_url(self):
+        return reverse('projects:project-type', args=(self.slug,))
+
+    def save(self, *args, **kwargs):
+        if self._state.adding:
+            self.slug = slugify(self.name)
+            super().save(*args, **kwargs)
+        else:
+            super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -42,23 +70,31 @@ class Projecttype(models.Model):
 class Project(models.Model):
     name = models.CharField(max_length=140)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
-    description = models.CharField(max_length=200, blank=True, null=True, )
-    level = models.CharField(max_length=200, blank=True, null=True, )
-    concept = models.CharField(max_length=200, blank=True, null=True, )
-    projectimage1 = models.CharField(max_length=200, blank=True, null=True, )
-    projectimage2 = models.CharField(max_length=200, blank=True, null=True, )
-    projectimage3 = models.CharField(max_length=200, blank=True, null=True, )
-    requirement1 = models.CharField(max_length=200, blank=True, null=True, )
-    requirement2 = models.CharField(max_length=200, blank=True, null=True, )
-    requirement3 = models.CharField(max_length=200, blank=True, null=True, )
-    requirement4 = models.CharField(max_length=200, blank=True, null=True, )
-    requirement5 = models.CharField(max_length=200, blank=True, null=True, )
-    framework = models.ForeignKey(Framework, on_delete=False, null=True)
-    devtype = models.ForeignKey(Devtype, on_delete=False, null=True)
-    projecttype = models.ForeignKey(Projecttype, on_delete=False, null=True)
+    description = models.TextField(blank=True)
+    level = models.ForeignKey(ProjectLevel, null=True, blank=True, on_delete=models.CASCADE)
+    concepts = TaggableManager(blank=True)
+    project_images = models.CharField(max_length=200, blank=True, null=True, )
+    requirements = models.CharField(max_length=200, blank=True, null=True, )
+    devtype = models.ForeignKey(DevType, on_delete=False, null=True, blank=True)
+    projecttype = models.ForeignKey(ProjectType, on_delete=False, null=True, blank=True)
+    slug = models.SlugField(unique=True, blank=True)
 
     def __str__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        if self._state.adding:
+            self.slug = slugify(self.name)
+            super().save(*args, **kwargs)
+        else:
+            super().save(*args, **kwargs)
+
+
+class RecruiterProject(models.Model):
+    recruiter = models.ForeignKey(User, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    framework = models.ForeignKey(Framework, on_delete=False, null=True, blank=True)
+    language = models.ForeignKey(Language, on_delete=False, null=True, blank=True)
 
 
 class OngoingProjects(models.Model):
