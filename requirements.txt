@@ -23,6 +23,7 @@ django-heroku==0.3.1
 django-invitations==1.9.2
 django-paypal==0.5.0
 django-storages==1.7.1
+django-taggit==0.23.0
 docutils==0.14
 enum34==1.1.6
 Fabric3==1.14.post1
