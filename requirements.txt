@@ -36,7 +36,7 @@ keyrings.alt==3.0
 kombu==4.2.1
 oauthlib==2.1.0
 paramiko==2.4.2
-Pillow==8.1.1
+Pillow==8.2.0
 
 psycopg2==2.7.4
 psycopg2-binary==2.7.4
